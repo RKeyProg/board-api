@@ -3,17 +3,20 @@ from fastapi import APIRouter, Depends
 from app.projects.schema import (
     ProjectCreateRequest,
     ProjectCreateResponse,
+    ProjectGetResponse,
     ProjectPath,
     ProjectUpdateRequest,
     ProjectUpdateResponse,
 )
+from app.projects.service import ProjectServiceDep
 
-router = APIRouter(prefix="/projects", tags=["projects"])
+router = APIRouter(prefix="/v1/projects", tags=["projects"])
 
 
 @router.get("/{project_id}")
-def get_project(path: ProjectPath = Depends()):
-    return {"id": path.project_id}
+def get_project(service: ProjectServiceDep, path: ProjectPath = Depends()):
+    res = service.get(path.project_id)
+    return ProjectGetResponse(id=res, name="test")
 
 
 @router.post("/")

@@ -36,3 +36,8 @@ class ProjectUpdateResponse(BaseModel):
     id: int
     name: str | None
     description: str | None
+
+
+class ProjectGetResponse(BaseModel):
+    id: int
+    name: str
