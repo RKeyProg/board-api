@@ -1,7 +1,10 @@
+import logging
 from typing import Annotated
 
 from fastapi import Depends
 from app.tasks.repository import TaskRepository, TaskRepositoryDep
+
+logger = logging.getLogger(__name__)
 
 
 class TaskService:
@@ -9,7 +12,10 @@ class TaskService:
         self.repo = repo
 
     def get(self, task_id: int):
-        return self.repo.get_by_id(task_id)
+        try:
+            return self.repo.get_by_id(task_id)
+        except ValueError as e:
+            logger.error("Error: %s", e, exc_info=True)
 
 
 def get_task_service(repo: TaskRepositoryDep):
