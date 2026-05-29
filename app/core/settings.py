@@ -16,6 +16,7 @@ class AuthSettings(BaseSettings):
 
 class DatabaseSettings(BaseSettings):
     url: str
+    url_sync: str
 
 
 class Settings(BaseSettings):
@@ -24,6 +25,7 @@ class Settings(BaseSettings):
     )
 
     database_url: str
+    database_url_sync: str
     jwt_secret: str
 
     @property
@@ -32,7 +34,7 @@ class Settings(BaseSettings):
 
     @property
     def db(self) -> DatabaseSettings:
-        return DatabaseSettings(url=self.database_url)
+        return DatabaseSettings(url=self.database_url, url_sync=self.database_url_sync)
 
     @property
     def auth(self) -> AuthSettings:
@@ -45,7 +47,7 @@ class Settings(BaseSettings):
 
         dbname = parsed.path.lstrip("/") or ""
 
-        if parsed.scheme not in ["postgresql", "sqlite"]:
+        if parsed.scheme not in ["postgresql", "postgresql+asyncpg", "sqlite"]:
             raise ValueError("DATABASE_URL must start with postgresql:// or sqlite://")
 
         if not parsed.hostname:
