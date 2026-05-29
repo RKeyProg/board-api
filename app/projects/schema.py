@@ -7,7 +7,7 @@ class ProjectPath(BaseModel):
 
 class ProjectCreateRequest(BaseModel):
     key: str
-    name: str
+    name: str | None = None
     description: str | None = None
 
     model_config = {
@@ -24,20 +24,26 @@ class ProjectCreateRequest(BaseModel):
 
 class ProjectCreateResponse(BaseModel):
     id: int
-    name: str
+    key: str | None = None
+    name: str | None = None
+    description: str | None = None
 
 
 class ProjectUpdateRequest(BaseModel):
+    key: str | None = None
     name: str | None = None
     description: str | None = None
 
 
 class ProjectUpdateResponse(BaseModel):
     id: int
-    name: str | None
+    key: str | None = None
+    name: str | None = None
     description: str | None
 
 
 class ProjectGetResponse(BaseModel):
     id: int
-    name: str
+    key: str
+    name: str | None = None
+    description: str | None = None
